@@ -1,3 +1,5 @@
+> This branch ships the prebuilt runtime package for pinned Git installation. Development and build commands belong to the maintained `main` branch; the runtime manifest intentionally contains no build lifecycle or development dependencies.
+
 # OpenCode Permission Reviewer
 
 > [!NOTE]
