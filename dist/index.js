@@ -3484,6 +3484,9 @@ function buildEvidenceResult(envelope, config) {
   const pending = pendingPermissionSection(request, config);
   const canonicalIntent = envelope.intent !== void 0 && envelope.lineage !== void 0;
   const action = [
+    renderPolicySummary(envelope.policyTrace, config.maxPartChars * 2),
+    renderActionPurpose(envelope.actionPurpose, config.maxPartChars * 2, canonicalIntent),
+    envelope.enrichment || "ACTION_ENRICHMENT\n<none />",
     `PENDING_PERMISSION
 ${pending.text}`,
     ...envelope.verifiedScript === void 0 ? [] : [envelope.verifiedScript.text]
@@ -3504,10 +3507,7 @@ ${canonicalIntent ? "<see DIRECT_USER_INTENT />" : envelope.intentHistory || "<n
 ${askDecisions}`],
     ...actorEvidenceSections(envelope, config),
     `RECENT_TRANSCRIPT
-${envelope.transcript || "<no transcript available />"}`,
-    renderPolicySummary(envelope.policyTrace, config.maxPartChars * 2),
-    renderActionPurpose(envelope.actionPurpose, config.maxPartChars * 2, canonicalIntent),
-    envelope.enrichment || "ACTION_ENRICHMENT\n<none />"
+${envelope.transcript || "<no transcript available />"}`
   ].join("\n\n");
   const limit = config.maxContextChars + config.maxPartChars * 2 + config.maxEnrichmentChars + config.maxIntentChars + (envelope.verifiedScript?.status === "full" ? envelope.verifiedScript.text.length : 0);
   const suffix = truncate(action, limit);
